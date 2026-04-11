@@ -15,13 +15,13 @@ const Avatar: FC<AvatarInterface> = ({title, subtitle="Subtitle missing", imgUrl
         { imgUrl && 
             <img
             src={imgUrl}
-            className={`${size === "md" ? "w-16 h-16" : "w-20 h-20"} rounded-full object-cover`}
+            className={`${size === "md" ? "w-12 h-12" : "w-16 h-16"} rounded-full object-cover`}
             alt="user__avatar"
             />
         }
         { (title && subtitle) && 
             <div className="flex flex-col">
-            {title && <h1 className={`${size === "lg" ? "text-lg/6" : "text-base"} font-medium`} style={{color: titleColor}}>{title}</h1>}
+            {title && <h1 className={`${size === "lg" ? "text-lg/6" : "text-sm"} font-medium`} style={{color: titleColor}}>{title}</h1>}
             {subtitle && <label className="text-sm" style={{color: subtitleColor}}>{subtitle}</label>}
             </div>
         }

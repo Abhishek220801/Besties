@@ -1,17 +1,17 @@
-import { div } from "motion/react-client";
-import type { FC, ReactElement } from "react";
+import type { FC, ReactElement, ReactNode } from "react";
 
 interface CardInterface {
     children?: ReactElement
-    title?: string
+    title?: ReactNode
     footer?: ReactElement
     divider?: Boolean
+    bgColor?: string
 }
 
 const Card: FC<CardInterface> = ({children, title, footer, divider=false}) => {
   return (
-    <div className="bg-white shadow-lg px-5 py-4 rounded-lg border border-gray-100 space-y-3">
-        {title && <h1 className="text-lg font-semibold">{title}</h1>}
+    <div className={`bg-white shadow-lg px-5 py-4 rounded-lg border border-gray-100 space-y-3`}>
+        {title && <h1 className="text-lg font-semibold capitalize">{title}</h1>}
         {
         divider && 
             <div className="border-b border-gray-100 -mx-5 my-4 " />
