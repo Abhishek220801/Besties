@@ -246,7 +246,9 @@ const Layout = () => {
                   />
                   <div className="space-x-2 text-xs flex">
                     <RiChatAiLine className="hover:text-blue-600 text-blue-500" />
-                    <RiPhoneLine className="text-green-400 hover:text-green-500" />
+                    <Link to="/app/audio-call">
+                      <RiPhoneLine className="text-green-400 hover:text-green-500" />
+                    </Link>
                     <Link to="/app/video-call">
                         <RiVideoOnAiLine className="text-amber-500 hover:text-amber-600" />
                     </Link>
