@@ -1,4 +1,4 @@
-import 'animate.css'
+import type { FC, ReactNode } from 'react'
 
 const ButtonModel = {
     primary: "bg-blue-500 hover:bg-blue-600 px-6 py-2 text-white rounded font-medium",
@@ -10,7 +10,13 @@ const ButtonModel = {
     info: "bg-cyan-500 hover:bg-cyan-600 px-6 py-2 text-white rounded font-medium"
 }
 
-const Button = ({children="Submit", type="primary", onClick}) => {
+interface ButtonInterface {
+    children?: ReactNode
+    type?: keyof typeof ButtonModel
+    onClick?: () => void
+}
+
+const Button : FC<ButtonInterface> = ({children="Submit", type="primary", onClick}) => {
     return (
         <button className={`${ButtonModel[type]} flex`} onClick={onClick}>{children}</button>
     )

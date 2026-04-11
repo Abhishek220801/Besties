@@ -225,7 +225,7 @@ const Layout = () => {
             className="space-y-5"
           >
             {
-              Array(20).fill(0).map((_, index) => (
+              Array(20).fill(0).map((item, index) => (
                 <motion.div
                   key={index}
                   variants={{
@@ -236,18 +236,20 @@ const Layout = () => {
                 >
                   <Avatar
                     size="md"
-                    imgUrl="/images/avt.png"
-                    title="Kamya Kharbanda"
+                    imgUrl="/images/girl-avt.png"
+                    title="Shreya Ghoshal"
                     subtitle={
                       <small className={`${index % 2 === 0 ? "text-zinc-400" : "text-green-400"} font-medium`}>
                         {index % 2 !== 0 ? "Online" : "Offline"}
                       </small>
                     }
                   />
-                  <div className="space-x-2 text-xs">
+                  <div className="space-x-2 text-xs flex">
                     <RiChatAiLine className="hover:text-blue-600 text-blue-500" />
                     <RiPhoneLine className="text-green-400 hover:text-green-500" />
-                    <RiVideoOnAiLine className="text-amber-500 hover:text-amber-600" />
+                    <Link to="/app/video-call">
+                        <RiVideoOnAiLine className="text-amber-500 hover:text-amber-600" />
+                    </Link>
                   </div>
                 </motion.div>
               ))

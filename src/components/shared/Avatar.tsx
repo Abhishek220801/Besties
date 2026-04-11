@@ -15,7 +15,7 @@ const Avatar: FC<AvatarInterface> = ({title, subtitle="Subtitle missing", imgUrl
         { imgUrl && 
             <img
             src={imgUrl}
-            className={`${size === "md" ? "w-12 h-12" : "w-16 h-16"} rounded-full object-cover`}
+            className={`${size === "md" ? "w-15 h-15" : "w-16 h-16"} rounded-full object-cover`}
             alt="user__avatar"
             />
         }
