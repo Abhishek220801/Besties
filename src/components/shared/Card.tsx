@@ -1,16 +1,17 @@
 import type { FC, ReactElement, ReactNode } from "react";
 
 interface CardInterface {
-    children?: ReactElement
+    children?: ReactNode
     title?: ReactNode
     footer?: ReactElement
     divider?: Boolean
     bgColor?: string
+    key?: string | number
 }
 
-const Card: FC<CardInterface> = ({children, title, footer, divider=false}) => {
+const Card: FC<CardInterface> = ({children, title, footer, divider=false, key=0}) => {
   return (
-    <div className={`bg-white shadow-lg px-5 py-4 rounded-lg border border-gray-100 space-y-3`}>
+    <div className={`bg-white shadow-lg px-5 py-4 rounded-lg border border-gray-100 space-y-3`} key={key}>
         {title && <h1 className="text-lg font-semibold capitalize">{title}</h1>}
         {
         divider && 

@@ -8,6 +8,7 @@ import Friends from "./components/app/Friends"
 import Dashboard from "./components/app/Dashboard"
 import Video from "./components/app/Video"
 import Audio from "./components/app/Audio"
+import Chat from "./components/app/Chat"
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="friends" element={<Friends/>} />
           <Route path="video-call" element={<Video/>} />
           <Route path="audio-call" element={<Audio/>} />
+          <Route path="chat" element={<Chat/>} />
         </Route>
       </Routes>
     </BrowserRouter>

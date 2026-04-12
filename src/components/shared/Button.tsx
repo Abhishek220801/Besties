@@ -18,7 +18,11 @@ interface ButtonInterface {
 
 const Button : FC<ButtonInterface> = ({children="Submit", type="primary", onClick}) => {
     return (
-        <button className={`${ButtonModel[type]} flex`} onClick={onClick}>{children}</button>
+        <button className={`${ButtonModel[type]} flex`} onClick={(e) => {
+            e.preventDefault();
+            onClick?.()
+        }
+        }>{children}</button>
     )
 }
 export default Button

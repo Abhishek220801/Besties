@@ -2,12 +2,14 @@ import {
   RiArrowLeftLine,
   RiChatAiLine,
   RiChatSmile2Line,
+  RiCheckLine,
   RiGroupLine,
   RiHome9Line,
   RiLogoutCircleRLine,
   RiMenuLine,
   RiPhoneLine,
   RiUser2Fill,
+  RiUserAddLine,
   RiVideoOnAiLine,
 } from "@remixicon/react"
 
@@ -20,6 +22,7 @@ import { motion, AnimatePresence } from "motion/react"
 const Layout = () => {
 
   const [open, setOpen] = useState(true)
+  const [sendRequest, setSendRequest] = useState(false);
 
   const expandedWidth = 320
   const collapsedWidth = 80
@@ -51,6 +54,10 @@ const Layout = () => {
 
   const getPathname = (path: string) =>
     path.split("/").pop()?.split("-").join(" ")
+
+  const handleReqSend = () => {
+    setSendRequest(!sendRequest);  
+  }
 
   return (
     <div className="min-h-screen">
@@ -210,7 +217,30 @@ const Layout = () => {
         className="bg-white fixed top-0 right-0 h-full py-8 px-2 overflow-auto"
         style={{ width: rightAsideSize }}
       >
-        <Card title="My Friends" divider>
+
+        <div className="overflow-auto h-68 mb-4">
+            <Card title="Suggestions" divider >
+              {
+                Array(10).fill(0).map((_, index) => (
+                  <div key={index} className="flex gap-4 mb-2.5">
+                    <img src="/images/avt.png" alt="avt" className="w-16 h-16 rounded-full object-cover" />
+                    <div>
+                      <h1 className="text-black font-medium">Rishi Kapoor</h1>
+                      <button title="Add Friend" className="bg-green-500 text-white rounded px-2 py-1 text-xs hover:bg-green-600 flex gap-2 items-center">
+                        <div className="scale-75">
+                          <RiUserAddLine/>
+                        </div>
+                        <span>Add Friend</span>
+                      </button>
+                    </div>
+                  </div>
+
+                ))
+              }
+            </Card>
+        </div>
+
+        <Card title="Friends" divider>
           <motion.div
             initial="hidden"
             animate="visible"
@@ -245,7 +275,9 @@ const Layout = () => {
                     }
                   />
                   <div className="space-x-2 text-xs flex">
-                    <RiChatAiLine className="hover:text-blue-600 text-blue-500" />
+                    <Link to="/app/chat">
+                      <RiChatAiLine className="hover:text-blue-600 text-blue-500" />
+                    </Link>
                     <Link to="/app/audio-call">
                       <RiPhoneLine className="text-green-400 hover:text-green-500" />
                     </Link>

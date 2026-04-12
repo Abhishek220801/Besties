@@ -1,4 +1,4 @@
-import { RiCamera2Line, RiFullscreenLine, RiMicLine, RiMicOffFill, RiMicOffLine, RiTv2Line, RiUserAddLine, RiVideoOffLine, RiVideoOnLine } from "@remixicon/react"
+import { RiCamera2Line, RiFullscreenLine, RiMicLine, RiMicOffLine, RiTv2Line, RiUserAddLine, RiVideoOffLine, RiVideoOnLine } from "@remixicon/react"
 import Button from "../shared/Button"
 import { MdCallEnd } from "react-icons/md"
 import { useState } from "react"

@@ -1,4 +1,12 @@
-const Input = ({name, placeholder, type="text"}) => {
+import type { FC } from "react"
+
+interface InputPropsInterface {
+  name? : string
+  placeholder? : string
+  type? : string
+}
+
+const Input: FC<InputPropsInterface> = ({name, placeholder, type="text"}) => {
   return (
     <div>
       <input 

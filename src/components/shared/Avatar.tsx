@@ -6,12 +6,13 @@ interface AvatarInterface {
     imgUrl?: string
     titleColor?: string
     subtitleColor?: string
-    size?: "lg" | "md"
+    size?: "lg" | "md" | "sm"
+    key?: string | number
 }
 
-const Avatar: FC<AvatarInterface> = ({title, subtitle="Subtitle missing", imgUrl, titleColor="#000000", subtitleColor="#f5f5f5", size="lg"}) => {
+const Avatar: FC<AvatarInterface> = ({title, subtitle="Subtitle missing", imgUrl, titleColor="#000000", subtitleColor="#f5f5f5", size="lg", key=0}) => {
   return (
-      <div className="flex gap-3 items-center">
+      <div className="flex gap-3 items-center" key={key}>
         { imgUrl && 
             <img
             src={imgUrl}

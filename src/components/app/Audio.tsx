@@ -18,10 +18,10 @@ const Audio = () => {
             />
           </div>
         </Card>
-        <Card title="Yash Sharma">
+        <Card title="Yashika Sharma">
           <div className="flex flex-col items-center">
             <img
-              src="/images/avt.png"
+              src="/images/girl-avt.png"
               alt="user-pic"
               className="w-40 h-40 rounded-full object-cover"
             />
