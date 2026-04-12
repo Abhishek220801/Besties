@@ -7,11 +7,12 @@ interface CardInterface {
     divider?: Boolean
     bgColor?: string
     key?: string | number
+    noPadding?: boolean
 }
 
-const Card: FC<CardInterface> = ({children, title, footer, divider=false, key=0}) => {
+const Card: FC<CardInterface> = ({children, title, footer, divider=false, key=0, noPadding=false}) => {
   return (
-    <div className={`bg-white shadow-lg px-5 py-4 rounded-lg border border-gray-100 space-y-3`} key={key}>
+    <div className={`bg-white shadow-lg ${noPadding ? "" : "px-5 py-4"} rounded-lg border border-gray-100 space-y-3`} key={key}>
         {title && <h1 className="text-lg font-semibold capitalize">{title}</h1>}
         {
         divider && 

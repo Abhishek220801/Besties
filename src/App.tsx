@@ -9,6 +9,7 @@ import Dashboard from "./components/app/Dashboard"
 import Video from "./components/app/Video"
 import Audio from "./components/app/Audio"
 import Chat from "./components/app/Chat"
+import NotFound from "./components/app/NotFound"
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="audio-call" element={<Audio/>} />
           <Route path="chat" element={<Chat/>} />
         </Route>
+        <Route path="*" element={<NotFound/>} />
       </Routes>
     </BrowserRouter>
   )

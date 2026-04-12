@@ -18,6 +18,7 @@ import Card from "../shared/Card.js"
 import { Link, Outlet, useLocation } from "react-router"
 import { useState } from "react"
 import { motion, AnimatePresence } from "motion/react"
+import Dashboard from "./Dashboard.tsx"
 
 const Layout = () => {
 
@@ -205,8 +206,14 @@ const Layout = () => {
             }
             divider
           >
+            {
+              pathname === "/app"
+              ? 
+              <Dashboard/>
+              : 
+              <Outlet />
+            }
 
-            <Outlet />
 
           </Card>
         </motion.div>

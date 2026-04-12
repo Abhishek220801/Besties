@@ -14,11 +14,12 @@ interface ButtonInterface {
     children?: ReactNode
     type?: keyof typeof ButtonModel
     onClick?: () => void
+    key?: string | number
 }
 
-const Button : FC<ButtonInterface> = ({children="Submit", type="primary", onClick}) => {
+const Button : FC<ButtonInterface> = ({key=0, children="Submit", type="primary", onClick}) => {
     return (
-        <button className={`${ButtonModel[type]} flex`} onClick={(e) => {
+        <button key={key} className={`${ButtonModel[type]} flex`} onClick={(e) => {
             e.preventDefault();
             onClick?.()
         }

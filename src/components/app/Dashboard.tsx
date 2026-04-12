@@ -1,7 +1,9 @@
+import Posts from "./Posts"
+
 const Dashboard = () => {
   return (
     <div>
-      Dashboard
+      <Posts/>
     </div>
   )
 }
