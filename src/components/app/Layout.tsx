@@ -2,7 +2,6 @@ import {
   RiArrowLeftLine,
   RiChatAiLine,
   RiChatSmile2Line,
-  RiCheckLine,
   RiGroupLine,
   RiHome9Line,
   RiLogoutCircleRLine,
@@ -55,10 +54,6 @@ const Layout = () => {
 
   const getPathname = (path: string) =>
     path.split("/").pop()?.split("-").join(" ")
-
-  const handleReqSend = () => {
-    setSendRequest(!sendRequest);  
-  }
 
   return (
     <div className="min-h-screen">
