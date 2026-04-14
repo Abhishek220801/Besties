@@ -4,8 +4,16 @@ import Card from "./shared/Card"
 import Input from "./shared/Input"
 import { Link } from "react-router"
 import { motion } from "motion/react"
+import { useContext, useEffect } from "react"
+import Context from "../Context"
 
 const Login = () => {
+  const {session} = useContext(Context)!;
+
+  useEffect(() => {
+    console.log(session?.myName)
+  }, [session]);
+
   return (
     <div className="bg-gray-100 flex items-center justify-center min-h-screen">
       <motion.div
