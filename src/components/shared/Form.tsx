@@ -1,26 +1,23 @@
 import type { FC, FormEvent, ReactNode } from "react";
 
-interface FormPropsInterface {
+export type DataType = Record<string, string>
+
+interface FormPropsInterface<T> {
   children?: ReactNode
-  onVal?: (data: Record<string,string>) => void
+  className?: string
+  onVal?: (data: T) => void    // generic type
 }
 
-const Form : FC<FormPropsInterface> = ({children, onVal}) => {
-    const getVal = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const form = e.currentTarget;
-        const inputs = form.getElementsByTagName("input");
-        const formData: Record<string,string> = {};
-        for(let input of inputs)
-        {
-            const key = input.name;
-            const value = input.value;
-            formData[key] = value
-        }
-        onVal?.(formData)
-    }
+const Form : FC<FormPropsInterface<DataType>> = ({children, className, onVal}) => {
+  const getVal = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const formData = Object.fromEntries(new FormData(form)) as DataType
+
+    onVal?.(formData)
+  }
   return (
-    <form onSubmit={getVal}>
+    <form className={className} onSubmit={getVal}>
       {children}
     </form>
   )

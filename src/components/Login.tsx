@@ -4,15 +4,32 @@ import Card from "./shared/Card"
 import Input from "./shared/Input"
 import { Link } from "react-router"
 import { motion } from "motion/react"
-import { useContext, useEffect } from "react"
-import Context from "../Context"
+import type { DataType } from "./shared/Form"
+import HttpInterceptor from "../lib/HttpInterceptor"
+import Form from "./shared/Form"
+import { toast } from "react-toastify"
+import axios from "axios"
 
 const Login = () => {
-  const {session} = useContext(Context)!;
 
-  useEffect(() => {
-    console.log(session?.myName)
-  }, [session]);
+  const login = async (values: DataType) => {
+    try 
+    {
+      const {data} = await HttpInterceptor.post('/auth/login', values);
+      toast.success(data?.message)
+    } 
+
+    catch (err: unknown) 
+    {
+      if(axios.isAxiosError(err))
+        toast.error(err.response?.data?.message || err.message)
+
+      else if(err instanceof Error)
+        toast.error(err.message)
+
+      else toast.error("Network Error");
+    }
+  }
 
   return (
     <div className="bg-gray-100 flex items-center justify-center min-h-screen">
@@ -32,7 +49,7 @@ const Login = () => {
                   Login to continue chatting with your besties
                 </p>
               </div>
-              <form className="space-y-5">
+              <Form className="space-y-5" onVal={login}>
                 <Input type="email" name="email" placeholder="Email Id" />
                 <Input type="password" name="password" placeholder="Password" />
                 <div className="flex justify-between">
@@ -52,13 +69,13 @@ const Login = () => {
                   </div>
                 </div>
 
-                <Button type="primary">
+                <Button type="primary" htmlType="submit">
                   <div className="w-full flex gap-1 justify-center">
                     <RiArrowRightUpLine />
                     Login
                   </div>
                 </Button>
-              </form>
+              </Form>
               <div className="flex gap-1">
                 <p>Don't have an account?</p>
                 <Link

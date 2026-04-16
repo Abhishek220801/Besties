@@ -13,17 +13,15 @@ const ButtonModel = {
 interface ButtonInterface {
     children?: ReactNode
     type?: keyof typeof ButtonModel
+    htmlType?: "button" | "submit" | "reset"
     onClick?: () => void
     key?: string | number
 }
 
-const Button : FC<ButtonInterface> = ({key=0, children="Submit", type="primary", onClick}) => {
+const Button : FC<ButtonInterface> = ({children="Submit", type="primary", onClick, htmlType}) => {
     return (
-        <button key={key} className={`${ButtonModel[type]} flex`} onClick={(e) => {
-            e.preventDefault();
-            onClick?.()
-        }
-        }>{children}</button>
+        <button type={htmlType} className={`${ButtonModel[type]} flex`} onClick={onClick}
+        >{children}</button>
     )
 }
 export default Button

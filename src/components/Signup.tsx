@@ -4,8 +4,20 @@ import Card from "./shared/Card"
 import Input from "./shared/Input"
 import { Link } from "react-router"
 import { motion } from "motion/react"
+import Form, { type DataType } from "./shared/Form"
+import HttpInterceptor from "../lib/HttpInterceptor"
 
 const Signup = () => {
+
+  const signup = async (values: DataType) => {
+    try {
+      const {data} = await HttpInterceptor.post("/auth/signup", values)
+      console.log(data);
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
     <div className="bg-gray-100 flex items-center justify-center min-h-screen">
       <motion.div
@@ -22,18 +34,18 @@ const Signup = () => {
                 <h1 className="text-3xl font-bold text-black">Join Besties</h1>
                 <p className="text-gray-500">Start your first chat now !</p>
               </div>
-              <form className="space-y-5">
+              <Form className="space-y-5" onVal={signup} >
                 <Input type="text" name="fullname" placeholder="Full Name" />
                 <Input type="email" name="email" placeholder="Email Id" />
                 <Input type="number" name="mobile" placeholder="Mobile Number" />
                 <Input type="password" name="password" placeholder="Password" />
-                <Button type="danger">
+                <Button type="danger" htmlType="submit">
                   <div className="w-full flex gap-1">
                     <RiArrowRightUpLine />
                     Sign up
                   </div>
                 </Button>
-              </form>
+              </Form>
               <div className="flex gap-1">
                 <p>Already have an account?</p>
                 <Link

@@ -1,27 +1,19 @@
-import { useContext, useRef } from "react"
-import Context from "../Context.tsx"
+import { useRef } from "react";
 
 const Home = () => {
 
-  const {session, setSession} = useContext(Context)!;
-  const inpRef = useRef<HTMLInputElement | null>(null);
+  const btnRef = useRef<HTMLButtonElement | null>(null);
 
-  const populateSession = () => {
-    const name = inpRef.current?.name;
-    const value = inpRef.current?.value;
-    setSession({
-      [name as string]: value
-    });
+  const demo = (myName: string, myNum: number) => {
+    alert(myName);
+    alert(myNum);
   }
 
   return (
     <div>
-        <label title="myName">Name</label>
-        <input name="myName" placeholder="Enter your name" type="text" ref={inpRef}/>
-        <button title="manipulator" onClick={() => populateSession()}>
-          Submit
-        </button>
-        <h1>{session?.myName}</h1>
+      <button ref={btnRef} className="bg-rose-600 text-white px-6 py-2 rounded" onClick={() => demo("abhi", 24)}>
+        Check me
+      </button>
     </div>
   )
 }
