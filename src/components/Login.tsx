@@ -2,33 +2,29 @@ import { RiArrowRightUpLine } from "@remixicon/react"
 import Button from "./shared/Button"
 import Card from "./shared/Card"
 import Input from "./shared/Input"
-import { Link } from "react-router"
+import { Link, Navigate, useNavigate } from "react-router"
 import { motion } from "motion/react"
 import type { DataType } from "./shared/Form"
 import HttpInterceptor from "../lib/HttpInterceptor"
 import Form from "./shared/Form"
 import { toast } from "react-toastify"
-import axios from "axios"
+import CatchError from "../lib/CatchError"
 
 const Login = () => {
+
+  const navigate = useNavigate();
 
   const login = async (values: DataType) => {
     try 
     {
       const {data} = await HttpInterceptor.post('/auth/login', values);
       toast.success(data?.message)
+      navigate("/app");
     } 
 
-    catch (err: unknown) 
-    {
-      if(axios.isAxiosError(err))
-        toast.error(err.response?.data?.message || err.message)
-
-      else if(err instanceof Error)
-        toast.error(err.message)
-
-      else toast.error("Network Error");
-    }
+    catch (err: unknown){
+      CatchError(err, "bottom-center")
+    } 
   }
 
   return (

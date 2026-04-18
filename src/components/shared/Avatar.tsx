@@ -22,7 +22,7 @@ const Avatar: FC<AvatarInterface> = ({title, subtitle="Subtitle missing", imgUrl
         }
         { (title && subtitle) && 
             <div className="flex flex-col">
-            {title && <h1 className={`${size === "lg" ? "text-lg/6" : "text-sm"} font-medium`} style={{color: titleColor}}>{title}</h1>}
+            {title && <h1 className={`${size === "lg" ? "text-lg/6" : "text-sm"} font-medium capitalize`} style={{color: titleColor}}>{title}</h1>}
             {subtitle && <label className="text-sm" style={{color: subtitleColor}}>{subtitle}</label>}
             </div>
         }

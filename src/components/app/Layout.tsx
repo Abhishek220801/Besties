@@ -15,14 +15,15 @@ import {
 import Avatar from "../shared/Avatar.js"
 import Card from "../shared/Card.js"
 import { Link, Outlet, useLocation } from "react-router"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import Dashboard from "./Dashboard.tsx"
+import Context from "../../Context.tsx"
 
 const Layout = () => {
 
   const [open, setOpen] = useState(true)
-  const [sendRequest, setSendRequest] = useState(false);
+  const {session} = useContext(Context);
 
   const expandedWidth = 320
   const collapsedWidth = 80
@@ -82,14 +83,19 @@ const Layout = () => {
                     exit={{ opacity: 0, scale: 0.85 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <Avatar
-                      title="Abhishek"
-                      subtitle="Junior Software Engineer"
-                      imgUrl="/images/avt.png"
-                      titleColor="white"
-                      subtitleColor="#ddd"
-                      size="md"
-                    />
+
+                    {
+                      session &&
+                      <Avatar
+                        title={session.fullname}
+                        subtitle={session.email}
+                        imgUrl="/images/avt.png"
+                        titleColor="white"
+                        subtitleColor="#ddd"
+                        size="md"
+                      />
+
+                    }
                   </motion.div>
                 ) : (
                   <motion.div
