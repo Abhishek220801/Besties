@@ -19,11 +19,19 @@ import { useContext, useState } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import Dashboard from "./Dashboard.tsx"
 import Context from "../../Context.tsx"
+import useSWR from "swr"
+import HttpInterceptor from "../../lib/HttpInterceptor.ts"
+import {v4 as uuid} from 'uuid';
+import Fetcher from "../../lib/fetcher.ts"
 
 const Layout = () => {
-
+  const eightMinInMs = (8*60)*1000;
   const [open, setOpen] = useState(true)
-  const {session} = useContext(Context);
+  const {error} = useSWR("/auth/refresh-token", Fetcher, {
+    refreshInterval: eightMinInMs,
+    shouldRetryOnError: false 
+  });
+  const {session, setSession} = useContext(Context);
 
   const expandedWidth = 320
   const collapsedWidth = 80
@@ -56,6 +64,38 @@ const Layout = () => {
   const getPathname = (path: string) =>
     path.split("/").pop()?.split("-").join(" ")
 
+  const uploadImg = () => {
+    const input = document.createElement("input");
+    input.type = "file"
+    input.accept = "image/*"
+    input.click()
+    input.onchange = async () => {
+      if(!input.files) return;
+      const file = input.files[0];
+      const path = `profile-pictures/${uuid()}.png`
+      const payload = {
+        path,
+        type: file.type
+      }
+      try {
+        const options = {
+          headers: {
+            'Content-Type': file.type
+          },
+          withCredentials: false
+        }
+        const {data} = await HttpInterceptor.post("/storage/upload", payload);
+        await HttpInterceptor.put(data.url, file, options);  // returns 200 status no other data response
+        const {data: user} = await HttpInterceptor.put('/auth/profile-picture', {path})
+        setSession({...session, image: user.image})
+      } catch (err) {
+        console.error(err)
+      }
+    }
+  }
+
+  error && <div>{error?.response?.data?.message}</div>
+
   return (
     <div className="min-h-screen">
       <motion.aside
@@ -86,15 +126,15 @@ const Layout = () => {
 
                     {
                       session &&
-                      <Avatar
-                        title={session.fullname}
-                        subtitle={session.email}
-                        imgUrl="/images/avt.png"
-                        titleColor="white"
-                        subtitleColor="#ddd"
-                        size="md"
-                      />
-
+                        <Avatar
+                          title={session.fullname}
+                          subtitle={session.email}
+                          imgUrl={session.image || "/images/avt.png"}
+                          titleColor="white"
+                          subtitleColor="#ddd"
+                          size="md"
+                          onClick={uploadImg}
+                          />
                     }
                   </motion.div>
                 ) : (
@@ -162,7 +202,7 @@ const Layout = () => {
             <AnimatePresence>
               {
                 open && (
-                  <Link to="/login">
+                  <Link to='/login'>
                     <motion.span
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -265,7 +305,7 @@ const Layout = () => {
             className="space-y-5"
           >
             {
-              Array(20).fill(0).map((item, index) => (
+              Array(20).fill(0).map((_, index) => (
                 <motion.div
                   key={index}
                   variants={{

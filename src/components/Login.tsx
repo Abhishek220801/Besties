@@ -2,7 +2,7 @@ import { RiArrowRightUpLine } from "@remixicon/react"
 import Button from "./shared/Button"
 import Card from "./shared/Card"
 import Input from "./shared/Input"
-import { Link, Navigate, useNavigate } from "react-router"
+import { Link, useNavigate } from "react-router"
 import { motion } from "motion/react"
 import type { DataType } from "./shared/Form"
 import HttpInterceptor from "../lib/HttpInterceptor"
@@ -18,6 +18,7 @@ const Login = () => {
     try 
     {
       const {data} = await HttpInterceptor.post('/auth/login', values);
+      console.log(data);
       toast.success(data?.message)
       navigate("/app");
     } 

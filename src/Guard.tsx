@@ -13,7 +13,7 @@ const Guard = () => {
 
     const getSession = async () => {
         try {
-            const {data} = await HttpInterceptor.get("/auth/session")
+            const {data} = await HttpInterceptor.get("/auth/session");
             setSession(data);
         } catch (err) {
             setSession(false);
