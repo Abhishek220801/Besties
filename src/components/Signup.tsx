@@ -1,20 +1,25 @@
-import { RiArrowRightUpLine } from "@remixicon/react"
+import { RiArrowRightUpLine, RiEye2Line, RiEyeLine } from "@remixicon/react"
 import Button from "./shared/Button"
 import Card from "./shared/Card"
 import Input from "./shared/Input"
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
 import { motion } from "motion/react"
 import Form, { type DataType } from "./shared/Form"
 import HttpInterceptor from "../lib/HttpInterceptor"
+import { toast } from "react-toastify"
 
 const Signup = () => {
 
+  const navigate = useNavigate();
+
   const signup = async (values: DataType) => {
     try {
-      const {data} = await HttpInterceptor.post("/auth/signup", values)
+      const {data} = await HttpInterceptor.post("/auth/signup", values);
       console.log(data);
-    } catch (err) {
-      console.log(err)
+      toast.info("Account registered successfully.");
+      navigate("/login");  
+    } catch (err: any) {
+      toast.error(err);
     }
   }
 
