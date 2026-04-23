@@ -1,9 +1,9 @@
 import { useContext, useEffect } from "react"
 import {Outlet, Navigate} from "react-router"
-import HttpInterceptor from "./lib/HttpInterceptor";
-import Context from "./Context.tsx";
+import HttpInterceptor from "../lib/HttpInterceptor.ts";
+import Context from "../Context.tsx";
 
-const Guard = () => {
+const RedirectGuard = () => {
 
     const {session, setSession} = useContext(Context);
 
@@ -24,9 +24,9 @@ const Guard = () => {
         return <h1>Loading...</h1>
 
     if(session === false)
-        return <Navigate to="/login" />
+        return <Outlet />
 
-  return <Outlet />
+  return <Navigate to="/app" />
 }
 
-export default Guard
+export default RedirectGuard

@@ -14,15 +14,16 @@ import {
 
 import Avatar from "../shared/Avatar.js"
 import Card from "../shared/Card.js"
-import { Link, Outlet, useLocation } from "react-router"
-import { useContext, useState } from "react"
+import { Link, Outlet, useLocation, useNavigate } from "react-router"
+import { useContext, useEffect, useState } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import Dashboard from "./Dashboard.tsx"
 import Context from "../../Context.tsx"
-import useSWR from "swr"
+import useSWR, { mutate } from "swr"
 import HttpInterceptor from "../../lib/HttpInterceptor.ts"
 import {v4 as uuid} from 'uuid';
 import Fetcher from "../../lib/fetcher.ts"
+import CatchError from "../../lib/CatchError.ts"
 
 const Layout = () => {
   const eightMinInMs = (8*60)*1000;
@@ -31,7 +32,22 @@ const Layout = () => {
     refreshInterval: eightMinInMs,
     shouldRetryOnError: false 
   });
+  
+  const logout = async () => {
+    try {
+      await HttpInterceptor.post('/auth/logout', {});
+      navigate('/login');
+    } catch (err) {
+      CatchError(err)
+    }
+  }
+  useEffect(() => {
+    if(error) logout();
+  }, [error])
+
   const {session, setSession} = useContext(Context);
+
+  const navigate = useNavigate();
 
   const expandedWidth = 320
   const collapsedWidth = 80
@@ -61,6 +77,7 @@ const Layout = () => {
     }
   ]
 
+
   const getPathname = (path: string) =>
     path.split("/").pop()?.split("-").join(" ")
 
@@ -87,7 +104,11 @@ const Layout = () => {
         const {data} = await HttpInterceptor.post("/storage/upload", payload);
         await HttpInterceptor.put(data.url, file, options);  // returns 200 status no other data response
         const {data: user} = await HttpInterceptor.put('/auth/profile-picture', {path})
-        setSession({...session, image: user.image})
+        setSession({
+          ...session,
+          image: user.image
+        })
+        mutate("/auth/refresh-token");
       } catch (err) {
         console.error(err)
       }
