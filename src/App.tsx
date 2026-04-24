@@ -15,6 +15,7 @@ import { useState } from "react"
 import { ToastContainer } from "react-toastify"
 import AuthGuard from "./guards/AuthGuard"
 import RedirectGuard from "./guards/RedirectGuard"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 function App() {
   const [session, setSession] = useState(null)

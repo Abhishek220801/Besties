@@ -24,6 +24,7 @@ import HttpInterceptor from "../../lib/HttpInterceptor.ts"
 import { v4 as uuid } from "uuid"
 import Fetcher from "../../lib/fetcher.ts"
 import CatchError from "../../lib/CatchError.ts"
+import FriendSuggestion from "./FriendSuggestion.tsx"
 
 const Layout = () => {
   const eightMinInMs = 8 * 60 * 1000
@@ -94,6 +95,7 @@ const Layout = () => {
       const payload = {
         path,
         type: file.type,
+        status: 'public-read'
       }
       try {
         const options = {
@@ -272,31 +274,7 @@ const Layout = () => {
         style={{ width: rightAsideSize }}
       >
         <div className="overflow-auto h-68 mb-4">
-          <Card title="Suggestions" divider>
-            {Array(10)
-              .fill(0)
-              .map((_, index) => (
-                <div key={index} className="flex gap-4 mb-2.5">
-                  <img
-                    src="/images/avt.png"
-                    alt="avt"
-                    className="w-16 h-16 rounded-full object-cover"
-                  />
-                  <div>
-                    <h1 className="text-black font-medium">Rishi Kapoor</h1>
-                    <button
-                      title="Add Friend"
-                      className="bg-green-500 text-white rounded px-2 py-1 text-xs hover:bg-green-600 flex gap-2 items-center"
-                    >
-                      <div className="scale-75">
-                        <RiUserAddLine />
-                      </div>
-                      <span>Add Friend</span>
-                    </button>
-                  </div>
-                </div>
-              ))}
-          </Card>
+          <FriendSuggestion/>
         </div>
 
         <Card title="Friends" divider>

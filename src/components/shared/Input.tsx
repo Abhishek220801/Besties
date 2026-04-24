@@ -4,9 +4,10 @@ interface InputPropsInterface {
   name? : string
   placeholder? : string
   type? : string
+  value? : string
 }
 
-const Input: FC<InputPropsInterface> = ({name, placeholder, type="text"}) => {
+const Input: FC<InputPropsInterface> = ({name, placeholder, type="text", value}) => {
   return (
     <div>
       <input 
@@ -14,6 +15,7 @@ const Input: FC<InputPropsInterface> = ({name, placeholder, type="text"}) => {
         placeholder={placeholder} 
         name={name}
         type={type}
+        value={value}
       />
     </div>
   )
