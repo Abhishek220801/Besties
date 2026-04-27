@@ -1,4 +1,4 @@
-import { Skeleton } from "antd"
+import { Empty, Skeleton } from "antd"
 import Card from "../shared/Card"
 import useSWR, { mutate } from "swr"
 import Fetcher from "../../lib/fetcher"
@@ -49,6 +49,12 @@ const FriendSuggestion = () => {
                 </div>
             </div>
         ))}
+
+        {
+            (friends && friends.length === 0)
+            &&
+            <Empty description="No new friend suggestions"/>
+        }
     </Card>
   )
 }

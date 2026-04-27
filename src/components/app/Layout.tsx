@@ -25,6 +25,7 @@ import { v4 as uuid } from "uuid"
 import Fetcher from "../../lib/fetcher.ts"
 import CatchError from "../../lib/CatchError.ts"
 import FriendSuggestion from "./FriendSuggestion.tsx"
+import FriendRequest from "./FriendRequest.tsx"
 
 const Layout = () => {
   const eightMinInMs = 8 * 60 * 1000
@@ -49,8 +50,6 @@ const Layout = () => {
   useEffect(() => {
     if (error) logout()
   }, [error])
-
-
 
   const expandedWidth = 320
   const collapsedWidth = 80
@@ -273,8 +272,11 @@ const Layout = () => {
         className="bg-white fixed top-0 right-0 h-full py-8 px-2 overflow-auto"
         style={{ width: rightAsideSize }}
       >
-        <div className="overflow-auto h-68 mb-4">
+        <div className="overflow-auto mb-4">
           <FriendSuggestion/>
+        </div>
+        <div className="overflow-auto mb-4">
+          <FriendRequest/>
         </div>
 
         <Card title="Friends" divider>
