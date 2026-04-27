@@ -1,13 +1,13 @@
 import { Skeleton } from "antd"
 import Card from "../shared/Card"
-import useSWR from "swr"
+import useSWR, { mutate } from "swr"
 import Fetcher from "../../lib/fetcher"
 import Error from "../shared/Error"
-import Button from "../shared/Button"
 import CatchError from "../../lib/CatchError"
 import HttpInterceptor from "../../lib/HttpInterceptor"
 import { useState } from "react"
 import SmallButton from "../shared/SmallButton"
+import { toast } from "react-toastify"
 
 const FriendSuggestion = () => {
     const [loading, setLoading] = useState({state: false, index: -1});
@@ -17,8 +17,10 @@ const FriendSuggestion = () => {
     const sendFriendRequest = async (id: string, index: number) => {
         try {
             setLoading({state: true, index});
-            const {data} = await HttpInterceptor.post('/friend', {id})
-            console.log(data);
+            await HttpInterceptor.post('/friend', {friend: id})
+            toast.success("Friend request sent !", {position: 'top-center'});
+            mutate("/friend/suggested");
+            mutate('/friend');
         } catch (err: any) {
             CatchError(err);
         } finally{
@@ -27,7 +29,7 @@ const FriendSuggestion = () => {
     }
 
   return (
-    <Card title="Suggestions" divider>
+    <Card title="Add New Friends" divider>
         { friendsLoading && <Skeleton active/>}
 
         { friendsError && <Error message={friendsError?.message} />}
