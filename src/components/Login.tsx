@@ -47,8 +47,8 @@ const Login = () => {
                 </p>
               </div>
               <Form className="space-y-5" onVal={login}>
-                <Input type="email" name="email" placeholder="Email Id" />
-                <Input type="password" name="password" placeholder="Password" />
+                <Input type="email" name="email" placeholder="Email Id" value="abhishek@gmail.com" />
+                <Input type="password" name="password" placeholder="Password" value="Abhi@123"/>
                 <div className="flex justify-between">
                   <div className="flex justify-end">
                     <Link
