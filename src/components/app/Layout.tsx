@@ -4,11 +4,10 @@ import {
   RiChatSmile2Line,
   RiGroupLine,
   RiHome9Line,
+  RiLogoutCircleLine,
   RiLogoutCircleRLine,
   RiMenuLine,
-  RiPhoneLine,
   RiUser2Fill,
-  RiVideoOnAiLine,
 } from "@remixicon/react"
 
 import Avatar from "../shared/Avatar.js"
@@ -27,6 +26,8 @@ import FriendSuggestion from "./friends/FriendSuggestion.tsx"
 import FriendRequest from "./friends/FriendRequest.tsx"
 import FriendList from "./friends/FriendList.tsx"
 import {useMediaQuery} from "react-responsive"
+import Logo from "./Logo.tsx"
+import IconButton from "../shared/IconButton.tsx"
 
 const Layout = () => {
   const eightMinInMs = 8 * 60 * 1000
@@ -140,14 +141,28 @@ const Layout = () => {
 
   return (
     <div className="min-h-screen">
+
+    <nav className="lg:hidden flex justify-between items-center bg-linear-to-br from-indigo-900 via-purple-800 to-blue-900 sticky top-0 left-0 z-20000 w-full py-4 px-6">
+      <Logo/>
+      <div className="flex gap-4">
+        <IconButton onClick={logout} icon={<RiLogoutCircleLine/>} type="danger"/>
+        <Link to='/app/chat'>
+          <IconButton icon={<RiChatAiLine/>} type="success"/>
+        </Link>
+        <IconButton icon={<RiMenuLine/>} onClick={() => setExpandedWidth(expandedWidth === 240 ? 0 : 240)} type="dark"/>
+      </div>
+    </nav>
+
       <motion.aside
         animate={{ width: open ? expandedWidth : collapsedWidth }}
         transition={{ duration: 0.25, ease: "easeInOut" }}
-        className="bg-white fixed top-0 left-0 h-full overflow-auto z-[20000]"
+        className="bg-white fixed top-0 left-0 h-full overflow-auto z-20000"
       >
         <div className="space-y-8 lg:rounded-2xl h-full lg:p-8 p-6 bg-linear-to-br from-indigo-900 via-purple-800 to-blue-900">
           <motion.button
-            onClick={() => setOpen(!open)}
+            onClick={() => {
+              setOpen(!open)
+            }}
             animate={{ rotate: open ? 0 : 180 }}
             transition={{ duration: 0.25 }}
             className="fixed top-4 left-3 z-50 text-slate-200 lg:block hidden"
@@ -255,7 +270,7 @@ const Layout = () => {
         }}
         transition={{ duration: 0.25 }}
         style={sectionDimension}
-        className="py-8 px-3"
+        className="lg:py-8 lg:px-3 p-6"
       >
         <motion.div
           initial={{ opacity: 0, y: 10 }}
@@ -292,17 +307,18 @@ const Layout = () => {
       </motion.section>
 
       <aside
-        className="lg:block hidden bg-white fixed top-0 right-0 h-full py-8 px-2 overflow-auto"
+        className="lg:block hidden bg-white fixed top-0 right-0 h-full py-8 px-2 overflow-auto space-y-8"
         style={{ width: rightAsideSize }}
       >
         {
           !isBlacklisted &&
-          <Card title="Friends" divider>
+          <Card title="My Friends" divider>
             <FriendList gap={6} column={2}/>
           </Card>
         }
+        <Card title="Recent Posts"></Card>
       </aside>
-
+      
       
     </div>
   )

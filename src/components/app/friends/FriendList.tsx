@@ -5,12 +5,12 @@ import IconButton from "../../shared/IconButton"
 import { Link } from "react-router"
 import type { FC } from "react"
 
-interface FriendsList {
+export interface FriendsListInterface {
   gap?: number
   column?: number
 }
 
-const FriendList: FC<FriendsList> = ({gap=8, column=3}) => {
+const FriendList: FC<FriendsListInterface> = ({gap=8, column=3}) => {
   return (
     <div className={`grid grid-cols-${column} gap-${gap}`}>
       {Array(12).fill(0).map((item, index) => (
