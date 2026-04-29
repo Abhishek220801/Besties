@@ -8,7 +8,6 @@ import {
   RiMenuLine,
   RiPhoneLine,
   RiUser2Fill,
-  RiUserAddLine,
   RiVideoOnAiLine,
 } from "@remixicon/react"
 
@@ -24,16 +23,33 @@ import HttpInterceptor from "../../lib/HttpInterceptor.ts"
 import { v4 as uuid } from "uuid"
 import Fetcher from "../../lib/fetcher.ts"
 import CatchError from "../../lib/CatchError.ts"
-import FriendSuggestion from "./FriendSuggestion.tsx"
-import FriendRequest from "./FriendRequest.tsx"
+import FriendSuggestion from "./friends/FriendSuggestion.tsx"
+import FriendRequest from "./friends/FriendRequest.tsx"
+import FriendList from "./friends/FriendList.tsx"
+import {useMediaQuery} from "react-responsive"
 
 const Layout = () => {
   const eightMinInMs = 8 * 60 * 1000
   const [open, setOpen] = useState(true)
+  const { pathname } = useLocation()
   const { error } = useSWR("/auth/refresh-token", Fetcher, {
     refreshInterval: eightMinInMs,
     shouldRetryOnError: false,
   })
+
+  const [expandedWidth, setExpandedWidth] = useState(0);
+  const [collapsedWidth, setCollapsedWidth] = useState(0); // 80
+  const rightAsideSize = 440
+  const isMobile = useMediaQuery({ query: '(max-width: 1224px)' })
+
+  const friendsUiBlackList = [
+    "/app/friends",
+    "/app/chat",
+    "/app/audio-call",
+    "/app/video-call",
+  ]
+
+  const isBlacklisted = friendsUiBlackList.some(path => path === pathname);
 
   const { session, setSession } = useContext(Context)
   const navigate = useNavigate()
@@ -51,15 +67,14 @@ const Layout = () => {
     if (error) logout()
   }, [error])
 
-  const expandedWidth = 320
-  const collapsedWidth = 80
-  const rightAsideSize = 440
+  useEffect(() => {
+    setExpandedWidth(isMobile ? 0 : 320)
+    setCollapsedWidth(isMobile ? 0 : 140)
+  }, [isMobile])
 
   const sectionDimension = {
-    width: `calc(100% - ${(open ? expandedWidth : collapsedWidth) + rightAsideSize}px)`,
+    width: isMobile ? '100%' : `calc(100% - ${(open ? expandedWidth : collapsedWidth) + rightAsideSize}px)`,
   }
-
-  const { pathname } = useLocation()
 
   const menus = [
     {
@@ -75,6 +90,7 @@ const Layout = () => {
     {
       icon: <RiGroupLine />,
       href: "/app/friends",
+      disabled: true,
       title: "My Friends",
     },
   ]
@@ -127,14 +143,14 @@ const Layout = () => {
       <motion.aside
         animate={{ width: open ? expandedWidth : collapsedWidth }}
         transition={{ duration: 0.25, ease: "easeInOut" }}
-        className="bg-white fixed top-0 left-0 h-full overflow-auto"
+        className="bg-white fixed top-0 left-0 h-full overflow-auto z-[20000]"
       >
-        <div className="space-y-8 rounded-2xl h-full p-8 bg-linear-to-br from-indigo-900 via-purple-800 to-blue-900">
+        <div className="space-y-8 lg:rounded-2xl h-full lg:p-8 p-6 bg-linear-to-br from-indigo-900 via-purple-800 to-blue-900">
           <motion.button
             onClick={() => setOpen(!open)}
             animate={{ rotate: open ? 0 : 180 }}
             transition={{ duration: 0.25 }}
-            className="fixed top-4 left-3 z-50 text-slate-200"
+            className="fixed top-4 left-3 z-50 text-slate-200 lg:block hidden"
           >
             <RiMenuLine />
           </motion.button>
@@ -233,10 +249,9 @@ const Layout = () => {
         </div>
       </motion.aside>
 
-      {/* CENTER CONTENT PANEL */}
       <motion.section
         animate={{
-          marginLeft: open ? expandedWidth : collapsedWidth,
+          marginLeft: isMobile ? 0 : (open ? expandedWidth : collapsedWidth),
         }}
         transition={{ duration: 0.25 }}
         style={sectionDimension}
@@ -246,16 +261,21 @@ const Layout = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.25 }}
+          className="space-y-8"
         >
+        {
+          !isBlacklisted &&
+          <FriendRequest/>
+        }
           <Card
             title={
-              <div className="flex gap-4 items-center">
+              <div className="flex gap-4 items-center" onClick={() => navigate(-1)}>
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                   className="bg-gray-100 w-10 h-10 rounded-full flex justify-center items-center hover:bg-slate-200"
                 >
-                  <RiArrowLeftLine />
+                <RiArrowLeftLine />
                 </motion.button>
                 <h1>{getPathname(pathname)}</h1>
               </div>
@@ -264,74 +284,26 @@ const Layout = () => {
           >
             {pathname === "/app" ? <Dashboard /> : <Outlet />}
           </Card>
+          {
+            !isBlacklisted &&
+            <FriendSuggestion/>
+          }
         </motion.div>
       </motion.section>
 
-      {/* RIGHT SIDEBAR FRIEND LIST */}
       <aside
-        className="bg-white fixed top-0 right-0 h-full py-8 px-2 overflow-auto"
+        className="lg:block hidden bg-white fixed top-0 right-0 h-full py-8 px-2 overflow-auto"
         style={{ width: rightAsideSize }}
       >
-        <div className="overflow-auto mb-4">
-          <FriendSuggestion/>
-        </div>
-        <div className="overflow-auto mb-4">
-          <FriendRequest/>
-        </div>
-
-        <Card title="Friends" divider>
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={{
-              hidden: {},
-              visible: {
-                transition: {
-                  staggerChildren: 0.03,
-                },
-              },
-            }}
-            className="space-y-5"
-          >
-            {Array(20)
-              .fill(0)
-              .map((_, index) => (
-                <motion.div
-                  key={index}
-                  variants={{
-                    hidden: { opacity: 0, y: 6 },
-                    visible: { opacity: 1, y: 0 },
-                  }}
-                  className="bg-gray-100 p-2 rounded-lg flex justify-between items-center"
-                >
-                  <Avatar
-                    size="md"
-                    imgUrl="/images/girl-avt.png"
-                    title="Shreya Ghoshal"
-                    subtitle={
-                      <small
-                        className={`${index % 2 === 0 ? "text-zinc-400" : "text-green-400"} font-medium`}
-                      >
-                        {index % 2 !== 0 ? "Online" : "Offline"}
-                      </small>
-                    }
-                  />
-                  <div className="space-x-2 text-xs flex">
-                    <Link to="/app/chat">
-                      <RiChatAiLine className="hover:text-blue-600 text-blue-500" />
-                    </Link>
-                    <Link to="/app/audio-call">
-                      <RiPhoneLine className="text-green-400 hover:text-green-500" />
-                    </Link>
-                    <Link to="/app/video-call">
-                      <RiVideoOnAiLine className="text-amber-500 hover:text-amber-600" />
-                    </Link>
-                  </div>
-                </motion.div>
-              ))}
-          </motion.div>
-        </Card>
+        {
+          !isBlacklisted &&
+          <Card title="Friends" divider>
+            <FriendList gap={6} column={2}/>
+          </Card>
+        }
       </aside>
+
+      
     </div>
   )
 }

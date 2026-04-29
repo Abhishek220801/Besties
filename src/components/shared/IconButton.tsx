@@ -34,11 +34,13 @@ interface IconButtonInterface {
 
 const IconButton : FC<IconButtonInterface> = ({children=undefined, key=0, type="primary", onClick, icon, title}) => {
     return (
-        <button key={key} title={title} className={`${IconButtonModel[type]} flex items-center justify-center text-base`} onClick={(e) => {
-            e.preventDefault();
+        <button key={key} type='button' title={title} className={`${IconButtonModel[type]} flex items-center justify-center text-base`} onClick={(e) => {
             onClick?.()
         }
-        }>{children}</button>
+        }>
+          {icon}
+          {children}
+        </button>
     )
 }
 export default IconButton

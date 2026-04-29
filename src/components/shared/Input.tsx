@@ -5,9 +5,10 @@ interface InputPropsInterface {
   placeholder? : string
   type? : string
   value? : string
+  onChange? : (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-const Input: FC<InputPropsInterface> = ({name, placeholder, type="text", value}) => {
+const Input: FC<InputPropsInterface> = ({name, placeholder, type="text", value, onChange}) => {
   return (
     <div>
       <input 
@@ -16,6 +17,7 @@ const Input: FC<InputPropsInterface> = ({name, placeholder, type="text", value})
         name={name}
         type={type}
         value={value}
+        onChange={onChange}
       />
     </div>
   )

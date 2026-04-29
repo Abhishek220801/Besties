@@ -9,8 +9,12 @@ import HttpInterceptor from "../lib/HttpInterceptor"
 import Form from "./shared/Form"
 import { toast } from "react-toastify"
 import CatchError from "../lib/CatchError"
+import { useState } from "react"
 
 const Login = () => {
+
+  const [email, setEmail] = useState("abhishek@gmail.com");
+  const [password, setPassword] = useState("Abhi@123");
 
   const navigate = useNavigate();
 
@@ -47,8 +51,8 @@ const Login = () => {
                 </p>
               </div>
               <Form className="space-y-5" onVal={login}>
-                <Input type="email" name="email" placeholder="Email Id" value="abhishek@gmail.com" />
-                <Input type="password" name="password" placeholder="Password" value="Abhi@123"/>
+                <Input type="email" name="email" placeholder="Email Id" value={email} onChange={(e) => {setEmail(e.target.value)}}/>
+                <Input type="password" name="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 <div className="flex justify-between">
                   <div className="flex justify-end">
                     <Link
